@@ -16,7 +16,7 @@ namespace CustomLinkedList.MyLinkedList
         {
             if (typeof(K).GetConstructor(new Type[] { GetType().GetGenericArguments()[0] }) == null)
             {
-                throw new Exception($"{typeof(K)} is missing a required constructor for type {typeof(T)}");
+                throw new LinkedListException($"{typeof(K)} is missing a required constructor for type {typeof(T)}");
             }
         }
 
@@ -49,6 +49,11 @@ namespace CustomLinkedList.MyLinkedList
             {
                 throw new ArgumentNullException(nameof(node));
             }
+            if (ReferenceEquals(node, _first))
+            {
+                AddFirst(value);
+                return;
+            }
             ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
 
             newNode.Previous = node.Previous;
@@ -65,6 +70,11 @@ namespace CustomLinkedList.MyLinkedList
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
+            }
+            if (ReferenceEquals(node, _last))
+            {
+                AddLast(value);
+                return;
             }
             ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
             newNode.Next = node.Next;

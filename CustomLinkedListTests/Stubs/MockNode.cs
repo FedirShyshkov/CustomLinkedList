@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using CustomLinkedList.Interfaces;
 
-namespace CustomLinkedList.MyLinkedList
+namespace CustomLinkedList.Tests.Stubs
 {
-    public class TestNode<T> : ICustomDoubleLinkedListNode<T>
+    public class MockNode<T> : ICustomDoubleLinkedListNode<T>
     {
+        public static int counter = 0;
         private T _value;
         private ICustomDoubleLinkedListNode<T> _previous = null;
         private ICustomDoubleLinkedListNode<T> _next = null;
-        public TestNode()
+        public int creationValue;
+        public MockNode(T data)
         {
+            _value = data;
+            counter++;
+            creationValue = counter;
         }
 
         public T Value

@@ -85,9 +85,7 @@ namespace CustomLinkedListManualTesting
             }
             Console.WriteLine($"Count: {list2.Count}");
 
-            //var list3 = new MyDoubleLinkedList<double, TestNode<double>>();
-            Console.ReadKey();
-            
+            Console.ReadKey();                       
         }
     }
 }

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLinkedList", "CustomLinkedList\CustomLinkedList.csproj", "{8602183F-08CD-4440-A878-E450085F89D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomLinkedList", "CustomLinkedList\CustomLinkedList.csproj", "{8602183F-08CD-4440-A878-E450085F89D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLinkedListManualTesting", "CustomLinkedListManualTesting\CustomLinkedListManualTesting.csproj", "{2B641122-785B-4E25-AC90-8CD483BEB7D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomLinkedList.Tests", "CustomLinkedListTests\CustomLinkedList.Tests.csproj", "{ADD1CD7B-AB93-4B66-BD6C-A47632A357BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2B641122-785B-4E25-AC90-8CD483BEB7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B641122-785B-4E25-AC90-8CD483BEB7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B641122-785B-4E25-AC90-8CD483BEB7D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD1CD7B-AB93-4B66-BD6C-A47632A357BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD1CD7B-AB93-4B66-BD6C-A47632A357BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD1CD7B-AB93-4B66-BD6C-A47632A357BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD1CD7B-AB93-4B66-BD6C-A47632A357BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
