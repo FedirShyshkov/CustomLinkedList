@@ -14,7 +14,10 @@ namespace CustomLinkedList.MyLinkedList
 
         public MyDoubleLinkedList()
         {
-
+            if (typeof(K).GetConstructor(new Type[] { GetType().GetGenericArguments()[0] }) == null)
+            {
+                throw new Exception($"{typeof(K)} is missing a required constructor for type {typeof(T)}");
+            }
         }
 
         public ICustomDoubleLinkedListNode<T> First

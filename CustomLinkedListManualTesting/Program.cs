@@ -13,6 +13,7 @@ namespace CustomLinkedListManualTesting
         {
             Console.WriteLine("Custom List");
             var list = new MyDoubleLinkedList<int, MyDoubleLinkedListNode<int>>();
+            
             list.AddFirst(1);
             list.AddFirst(2);
             list.AddLast(3);
@@ -84,6 +85,7 @@ namespace CustomLinkedListManualTesting
             }
             Console.WriteLine($"Count: {list2.Count}");
 
+            //var list3 = new MyDoubleLinkedList<double, TestNode<double>>();
             Console.ReadKey();
             
         }
