@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    public class MyDoubleLinkedList<T> : IEnumerable<T>
+    public class MyDoubleLinkedList<T, K> : ICustomDoubleLinkedList<T, K> where K:ICustomDoubleLinkedListNode<T>
     {
-        private MyDoubleLinkedListNode<T> _first = null;
-        private MyDoubleLinkedListNode<T> _last = null;
+        private ICustomDoubleLinkedListNode<T> _first = null;
+        private ICustomDoubleLinkedListNode<T> _last = null;
         private int _count;
 
         public MyDoubleLinkedList()
@@ -16,7 +17,7 @@ namespace CustomLinkedList.MyLinkedList
 
         }
 
-        public MyDoubleLinkedListNode<T> First
+        public ICustomDoubleLinkedListNode<T> First
         {
             get
             {
@@ -24,7 +25,7 @@ namespace CustomLinkedList.MyLinkedList
             }
         }
 
-        public MyDoubleLinkedListNode<T> Last
+        public ICustomDoubleLinkedListNode<T> Last
         {
             get
             {
@@ -39,13 +40,14 @@ namespace CustomLinkedList.MyLinkedList
             }
         }
 
-        public void AddBefore(MyDoubleLinkedListNode<T> node, T value)
+        public void AddBefore(ICustomDoubleLinkedListNode<T> node, T value)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            MyDoubleLinkedListNode<T> newNode = new MyDoubleLinkedListNode<T>(value);
+            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
+
             newNode.Previous = node.Previous;
             node.Previous = newNode;
             newNode.Next = node;
@@ -55,13 +57,13 @@ namespace CustomLinkedList.MyLinkedList
             }
             _count++;
         }
-        public void AddAfter(MyDoubleLinkedListNode<T> node, T value)
+        public void AddAfter(ICustomDoubleLinkedListNode<T> node, T value)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            MyDoubleLinkedListNode<T> newNode = new MyDoubleLinkedListNode<T>(value);
+            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
             newNode.Next = node.Next;
             node.Next = newNode;
             newNode.Previous = node;
@@ -73,7 +75,7 @@ namespace CustomLinkedList.MyLinkedList
         }
         public void AddFirst(T value)
         {
-            MyDoubleLinkedListNode<T> newNode = new MyDoubleLinkedListNode<T>(value);
+            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
             newNode.Next = _first;
             newNode.Previous = null;
             if (_first != null)
@@ -89,7 +91,7 @@ namespace CustomLinkedList.MyLinkedList
         }
         public void AddLast(T value)
         {
-            MyDoubleLinkedListNode<T> newNode = new MyDoubleLinkedListNode<T>(value);
+            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
             if (_first == null)
             {
                 newNode.Previous = null;
@@ -110,7 +112,7 @@ namespace CustomLinkedList.MyLinkedList
             _count = 0;
         }
 
-        public MyDoubleLinkedListNode<T> Find(T value)
+        public ICustomDoubleLinkedListNode<T> Find(T value)
         {
             var current = _first;
             while(current != null)
@@ -123,7 +125,7 @@ namespace CustomLinkedList.MyLinkedList
             }
             return null;
         }
-        public MyDoubleLinkedListNode<T> FindLast(T value)
+        public ICustomDoubleLinkedListNode<T> FindLast(T value)
         {
             var current = _last;
             while (current != null)
@@ -195,12 +197,12 @@ namespace CustomLinkedList.MyLinkedList
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new MyDoubleLinkedListEnumerator<T>(this);
+            return new MyDoubleLinkedListEnumerator<T, K>(this);
         }
 
         public IEnumerable<T> Reverse()
         {
-            var enumerator = new MyDoubleLinkedListEnumerator<T>(this, true);
+            var enumerator = new MyDoubleLinkedListEnumerator<T, K>(this, true);
             while (enumerator.MoveNext() == true)
             {
                 yield return enumerator.Current;

@@ -12,7 +12,7 @@ namespace CustomLinkedListManualTesting
         static void Main(string[] args)
         {
             Console.WriteLine("Custom List");
-            var list = new MyDoubleLinkedList<int>();
+            var list = new MyDoubleLinkedList<int, MyDoubleLinkedListNode<int>>();
             list.AddFirst(1);
             list.AddFirst(2);
             list.AddLast(3);

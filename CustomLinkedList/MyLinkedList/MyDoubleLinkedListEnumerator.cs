@@ -2,19 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    internal class MyDoubleLinkedListEnumerator<T> : IEnumerator<T>
+    internal class MyDoubleLinkedListEnumerator<T, K> : IEnumerator<T> where K : ICustomDoubleLinkedListNode<T>
     {
-        private MyDoubleLinkedListNode<T> _currentNode;
-        private MyDoubleLinkedList<T> _currentList;
+        private ICustomDoubleLinkedListNode<T> _currentNode;
+        private ICustomDoubleLinkedList<T, K> _currentList;
         private bool _isReversed = false;
-        public MyDoubleLinkedListEnumerator(MyDoubleLinkedList<T> currentList)
+        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T, K> currentList)
         {
             _currentList = currentList;
         }
-        public MyDoubleLinkedListEnumerator(MyDoubleLinkedList<T> currentList, bool isReversed):this(currentList)
+        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T, K> currentList, bool isReversed):this(currentList)
         {
             _isReversed = isReversed;
         }

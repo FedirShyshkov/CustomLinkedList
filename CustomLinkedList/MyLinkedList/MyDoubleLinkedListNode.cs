@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    public class MyDoubleLinkedListNode<T>
+    public class MyDoubleLinkedListNode<T>:ICustomDoubleLinkedListNode<T>
     {
         private T _value;
-        private MyDoubleLinkedListNode<T> _previous = null;
-        private MyDoubleLinkedListNode<T> _next = null;
+        private ICustomDoubleLinkedListNode<T> _previous = null;
+        private ICustomDoubleLinkedListNode<T> _next = null;
         public MyDoubleLinkedListNode(T data)
         {
             _value = data;
@@ -25,7 +26,7 @@ namespace CustomLinkedList.MyLinkedList
             }
         }
 
-        public MyDoubleLinkedListNode<T> Previous
+        public ICustomDoubleLinkedListNode<T> Previous
         {
             get
             {
@@ -37,7 +38,7 @@ namespace CustomLinkedList.MyLinkedList
             }
         }
 
-        public MyDoubleLinkedListNode<T> Next
+        public ICustomDoubleLinkedListNode<T> Next
         {
             get
             {
