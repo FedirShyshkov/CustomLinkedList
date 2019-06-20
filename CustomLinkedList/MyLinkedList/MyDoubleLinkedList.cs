@@ -6,18 +6,23 @@ using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    public class MyDoubleLinkedList<T, K> : ICustomDoubleLinkedList<T, K> where K:ICustomDoubleLinkedListNode<T>
+    public class MyDoubleLinkedList<T> : ICustomDoubleLinkedList<T>
     {
         private ICustomDoubleLinkedListNode<T> _first = null;
         private ICustomDoubleLinkedListNode<T> _last = null;
+        private Type _customNodeType = null;
         private int _count;
 
         public MyDoubleLinkedList()
         {
-            if (typeof(K).GetConstructor(new Type[] { GetType().GetGenericArguments()[0] }) == null)
+        }
+        internal MyDoubleLinkedList(Type customNodeType)
+        {
+            if (customNodeType.GetConstructor(new Type[] { GetType().GetGenericArguments()[0] }) == null)
             {
-                throw new LinkedListException($"{typeof(K)} is missing a required constructor for type {typeof(T)}");
+                throw new LinkedListException($"{customNodeType} is missing a required constructor for type {typeof(T)}");
             }
+            _customNodeType = customNodeType;
         }
 
         public ICustomDoubleLinkedListNode<T> First
@@ -42,7 +47,19 @@ namespace CustomLinkedList.MyLinkedList
                 return _count;
             }
         }
-
+        private ICustomDoubleLinkedListNode<T> createNode(T value)
+        {
+            ICustomDoubleLinkedListNode<T> newNode;
+            if (_customNodeType != null)
+            {
+                newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(_customNodeType, new object[] { value });
+            }
+            else
+            {
+                newNode = new MyDoubleLinkedListNode<T>(value);
+            }
+            return newNode;
+        }
         public void AddBefore(ICustomDoubleLinkedListNode<T> node, T value)
         {
             if (node == null)
@@ -54,8 +71,8 @@ namespace CustomLinkedList.MyLinkedList
                 AddFirst(value);
                 return;
             }
-            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
 
+            var newNode = createNode(value);
             newNode.Previous = node.Previous;
             node.Previous = newNode;
             newNode.Next = node;
@@ -76,7 +93,8 @@ namespace CustomLinkedList.MyLinkedList
                 AddLast(value);
                 return;
             }
-            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
+
+            var newNode = createNode(value);
             newNode.Next = node.Next;
             node.Next = newNode;
             newNode.Previous = node;
@@ -88,7 +106,7 @@ namespace CustomLinkedList.MyLinkedList
         }
         public void AddFirst(T value)
         {
-            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
+            var newNode = createNode(value);
             newNode.Next = _first;
             newNode.Previous = null;
             if (_first != null)
@@ -104,7 +122,7 @@ namespace CustomLinkedList.MyLinkedList
         }
         public void AddLast(T value)
         {
-            ICustomDoubleLinkedListNode<T> newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(typeof(K), new object[] { value });
+            var newNode = createNode(value);
             if (_first == null)
             {
                 newNode.Previous = null;
@@ -210,12 +228,12 @@ namespace CustomLinkedList.MyLinkedList
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new MyDoubleLinkedListEnumerator<T, K>(this);
+            return new MyDoubleLinkedListEnumerator<T>(this);
         }
 
         public IEnumerable<T> Reverse()
         {
-            var enumerator = new MyDoubleLinkedListEnumerator<T, K>(this, true);
+            var enumerator = new MyDoubleLinkedListEnumerator<T>(this, true);
             while (enumerator.MoveNext() == true)
             {
                 yield return enumerator.Current;

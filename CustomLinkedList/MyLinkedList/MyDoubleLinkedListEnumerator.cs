@@ -6,16 +6,16 @@ using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    internal class MyDoubleLinkedListEnumerator<T, K> : IEnumerator<T> where K : ICustomDoubleLinkedListNode<T>
+    internal class MyDoubleLinkedListEnumerator<T> : IEnumerator<T>
     {
         private ICustomDoubleLinkedListNode<T> _currentNode;
-        private ICustomDoubleLinkedList<T, K> _currentList;
+        private ICustomDoubleLinkedList<T> _currentList;
         private bool _isReversed = false;
-        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T, K> currentList)
+        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T> currentList)
         {
             _currentList = currentList;
         }
-        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T, K> currentList, bool isReversed):this(currentList)
+        public MyDoubleLinkedListEnumerator(ICustomDoubleLinkedList<T> currentList, bool isReversed):this(currentList)
         {
             _isReversed = isReversed;
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CustomLinkedList.Interfaces
 {
-    public interface ICustomDoubleLinkedList<T, K>:IEnumerable<T> where K:ICustomDoubleLinkedListNode<T>
+    public interface ICustomDoubleLinkedList<T>:IEnumerable<T>
     {
         ICustomDoubleLinkedListNode<T> First { get; }
         ICustomDoubleLinkedListNode<T> Last { get; }
