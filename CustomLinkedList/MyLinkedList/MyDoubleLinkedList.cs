@@ -6,67 +6,28 @@ using CustomLinkedList.Interfaces;
 
 namespace CustomLinkedList.MyLinkedList
 {
-    public class MyDoubleLinkedList<T> : ICustomDoubleLinkedList<T>
+    public class MyDoubleLinkedList<T, K> : ICustomDoubleLinkedList<T> where K:ICustomDoubleLinkedListNode<T>, new()
     {
-        private ICustomDoubleLinkedListNode<T> _first = null;
-        private ICustomDoubleLinkedListNode<T> _last = null;
-        private Type _customNodeType = null;
-        private int _count;
+        public ICustomDoubleLinkedListNode<T> First { get; set; }
 
-        public MyDoubleLinkedList()
-        {
-        }
-        internal MyDoubleLinkedList(Type customNodeType)
-        {
-            if (customNodeType.GetConstructor(new Type[] { GetType().GetGenericArguments()[0] }) == null)
-            {
-                throw new LinkedListException($"{customNodeType} is missing a required constructor for type {typeof(T)}");
-            }
-            _customNodeType = customNodeType;
-        }
-
-        public ICustomDoubleLinkedListNode<T> First
-        {
-            get
-            {
-                return _first;
-            }
-        }
-
-        public ICustomDoubleLinkedListNode<T> Last
-        {
-            get
-            {
-                return _last;
-            }
-        }
-        public int Count
-        {
-            get
-            {
-                return _count;
-            }
-        }
+        public ICustomDoubleLinkedListNode<T> Last { get; set; }
+        
+        public int Count { get; set; }
+        
         private ICustomDoubleLinkedListNode<T> createNode(T value)
         {
-            ICustomDoubleLinkedListNode<T> newNode;
-            if (_customNodeType != null)
-            {
-                newNode = (ICustomDoubleLinkedListNode<T>)Activator.CreateInstance(_customNodeType, new object[] { value });
-            }
-            else
-            {
-                newNode = new MyDoubleLinkedListNode<T>(value);
-            }
+            ICustomDoubleLinkedListNode<T> newNode = new K();
+            newNode.Value = value;            
             return newNode;
         }
+
         public void AddBefore(ICustomDoubleLinkedListNode<T> node, T value)
         {
             if (node == null)
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            if (ReferenceEquals(node, _first))
+            if (ReferenceEquals(node, First))
             {
                 AddFirst(value);
                 return;
@@ -80,7 +41,7 @@ namespace CustomLinkedList.MyLinkedList
             {
                 newNode.Previous.Next = newNode;
             }
-            _count++;
+            Count++;
         }
         public void AddAfter(ICustomDoubleLinkedListNode<T> node, T value)
         {
@@ -88,7 +49,7 @@ namespace CustomLinkedList.MyLinkedList
             {
                 throw new ArgumentNullException(nameof(node));
             }
-            if (ReferenceEquals(node, _last))
+            if (ReferenceEquals(node, Last))
             {
                 AddLast(value);
                 return;
@@ -102,50 +63,50 @@ namespace CustomLinkedList.MyLinkedList
             {
                 newNode.Next.Previous = newNode;
             }
-            _count++;
+            Count++;
         }
         public void AddFirst(T value)
         {
             var newNode = createNode(value);
-            newNode.Next = _first;
+            newNode.Next = First;
             newNode.Previous = null;
-            if (_first != null)
+            if (First != null)
             {
-                _first.Previous = newNode;
+                First.Previous = newNode;
             }
-            _first = newNode;
-            if (_last == null)
+            First = newNode;
+            if (Last == null)
             {
-                _last = newNode;
+                Last = newNode;
             }
-            _count++;
+            Count++;
         }
         public void AddLast(T value)
         {
             var newNode = createNode(value);
-            if (_first == null)
+            if (First == null)
             {
                 newNode.Previous = null;
-                _first = newNode;
-                _last = newNode;
-                _count = 1;
+                First = newNode;
+                Last = newNode;
+                Count = 1;
                 return;
             }
-            _last.Next = newNode;
-            newNode.Previous = _last;
-            _last = newNode;
-            _count++;
+            Last.Next = newNode;
+            newNode.Previous = Last;
+            Last = newNode;
+            Count++;
         }
         public void Clear()
         {
-            _first = null;
-            _last = null;
-            _count = 0;
+            First = null;
+            Last = null;
+            Count = 0;
         }
 
         public ICustomDoubleLinkedListNode<T> Find(T value)
         {
-            var current = _first;
+            var current = First;
             while(current != null)
             {
                 if( value.Equals(current.Value))
@@ -158,7 +119,7 @@ namespace CustomLinkedList.MyLinkedList
         }
         public ICustomDoubleLinkedListNode<T> FindLast(T value)
         {
-            var current = _last;
+            var current = Last;
             while (current != null)
             {
                 if (value.Equals(current.Value))
@@ -182,30 +143,30 @@ namespace CustomLinkedList.MyLinkedList
                 {
                     node.Previous.Next = node.Next;
                     node.Next.Previous = node.Previous;
-                    _count--;
+                    Count--;
                     return;
                 }
                 node.Previous.Next = null;
-                _last = node.Previous;
-                _count--;
+                Last = node.Previous;
+                Count--;
                 return;
             }
             if(node.Next != null)
             {
                 node.Next.Previous = null;
-                _first = node.Next;
-                _count--;
+                First = node.Next;
+                Count--;
                 return;
             }
             Clear();
         }
         public void RemoveFirst()
         {
-            if(_first.Next != null)
+            if( First.Next != null)
             {
-                _first = _first.Next;
-                _first.Previous = null;
-                _count--;
+                First = First.Next;
+                First.Previous = null;
+                Count--;
             } else
             {
                 Clear();
@@ -214,11 +175,11 @@ namespace CustomLinkedList.MyLinkedList
         }
         public void RemoveLast()
         {
-            if (_last.Previous != null)
+            if (Last.Previous != null)
             {
-                _last = _last.Previous;
-                _last.Next = null;
-                _count--;
+                Last = Last.Previous;
+                Last.Next = null;
+                Count--;
             }
             else
             {
